@@ -15,7 +15,7 @@ Netlify-ready anime catalog and embed player.
 - Live metadata sync from:
   `https://blakiteapi.xyz/api/getAllAnime.php`
 - New metadata entries from the live API can appear automatically.
-- Existing episode embeds from `embeds.txt` are preserved.
+- Existing episode embeds from `embeds.txt` are preserved, and missing episode embeds are generated using the source pattern `https://blakiteapi.xyz/embed/{animeId}/{season}-{episode}`.
 - Netlify Function avoids browser CORS problems.
 - Local Node/Express mode is also included.
 - No video files are re-hosted by this project.

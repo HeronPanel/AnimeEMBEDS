@@ -56,31 +56,70 @@ function render(){
   $("#grid").innerHTML=list.length?list.map(card).join(""):`<div class="empty">No anime found.</div>`;
 }
 function card(a){
-  return `<article class="card" onclick="openDetail(${JSON.stringify(a).replace(/</g,"\\u003c")})">
+  const index=catalog.indexOf(a);
+  return `<article class="card" onclick="openDetailByIndex(${index})">
     <div class="poster"><img loading="lazy" src="${esc(a.posterUrl)}" alt="" onerror="this.style.opacity='.15'">
       <span class="badge">${esc(a.language||a.category||"Anime")}</span><span class="rating">★ ${esc(a.rating||"0")}</span>
-    </div><div class="info"><div class="title">${esc(a.title)}</div><div class="meta">${esc(a.year||"")} · ${esc(a.episodeCount||((a.episodes||[]).length)||"")} episodes</div></div>
+    </div><div class="info"><div class="title">${esc(a.title)}</div><div class="meta">${esc(a.year||"")} · ${esc(a.episodeCount||getEpisodes(a).length||"")} episodes</div></div>
   </article>`;
 }
+function getEpisodes(a){
+  const existing=Array.isArray(a.episodes)?a.episodes:[];
+  if(existing.length){
+    return existing.map((e,i)=>({
+      ...e,
+      number:Number(e.number||i+1),
+      embedUrl:e.embedUrl || buildEmbedUrl(a, Number(e.number||i+1))
+    }));
+  }
+
+  const count=Math.max(
+    0,
+    Number(a.episodeCount||a.totalEpisodes||0)
+  );
+
+  if(!count || !a.tmdbId) return [];
+
+  const season=Math.max(1, Number(a.seasonNumber||1));
+  return Array.from({length:count},(_,i)=>({
+    number:i+1,
+    embedUrl:buildEmbedUrl(a,i+1)
+  }));
+}
+
+function buildEmbedUrl(a,episode){
+  const id=a.tmdbId || a.sourceId;
+  const season=Math.max(1,Number(a.seasonNumber||1));
+  if(!id) return "";
+  return `https://blakiteapi.xyz/embed/${encodeURIComponent(id)}/${season}-${episode}`;
+}
+
+function openDetailByIndex(index){
+  const a=catalog[index];
+  if(a) openDetail(a);
+}
+
 function openDetail(a){
-  const eps=a.episodes||[];
+  const eps=getEpisodes(a);
   $("#detail").innerHTML=`<div class="backdrop" style="background-image:url('${esc(a.backdropUrl||a.posterUrl||"")}')"><button class="close" onclick="closeDetail()">Close</button></div>
   <div class="detailBody"><img class="detailPoster" src="${esc(a.posterUrl)}" alt=""><div class="detailText">
     <h2>${esc(a.title)}</h2><div class="meta">${esc(a.year||"Unknown")} · ${esc(a.status||"")} · ${esc(a.language||"")} · ★ ${esc(a.rating||"0")}</div>
     <div class="tags">${[...(a.tags||[]),...(a.genres||[])].slice(0,18).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
     <p class="desc">${esc(a.description||"No description available.")}</p>
   </div></div>
-  <div class="episodes"><h3>Episodes</h3><div class="eps">${eps.length?eps.map((e,i)=>`<button class="ep" onclick='openPlayer(${JSON.stringify(a).replace(/</g,"\\u003c")},${i})'>EP ${esc(e.number||i+1)}</button>`).join(""):"<span class='meta'>No episode embed is present in the local catalog for this title.</span>"}</div></div>`;
+  <div class="episodes"><h3>Episodes</h3><div class="eps">${eps.length?eps.map((e,i)=>`<button class="ep" onclick='openPlayer(${JSON.stringify(a).replace(/</g,"\\u003c")},${i})'>EP ${esc(e.number||i+1)}</button>`).join(""):"<span class='meta'>Episode embeds are generated from the source ID and season/episode pattern.</span>"}</div></div>`;
   $("#detailModal").classList.add("open");
 }
 function closeDetail(){$("#detailModal").classList.remove("open")}
 function openPlayer(a,index){
-  const eps=a.episodes||[]; const e=eps[index]; if(!e) return;
+  const eps=getEpisodes(a); const e=eps[index]; if(!e) return;
   $("#playerTitle").textContent=`${a.title} — Episode ${e.number||index+1}`;
   $("#episodeSelect").innerHTML=eps.map((x,i)=>`<option value="${i}" ${i===index?"selected":""}>Episode ${x.number||i+1}</option>`).join("");
   $("#episodeSelect").onchange=()=>openPlayer(a,Number($("#episodeSelect").value));
-  // Only render an iframe for an explicit embed URL already present in the catalog.
-  $("#playerBox").innerHTML=e.embedUrl?`<iframe src="${esc(e.embedUrl)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>`:`<div style="height:100%;display:grid;place-items:center;color:#aaa">No embed URL available.</div>`;
+  const embedUrl=e.embedUrl || buildEmbedUrl(a, Number(e.number||index+1));
+  $("#playerBox").innerHTML=embedUrl
+    ? `<iframe src="${esc(embedUrl)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>`
+    : `<div style="height:100%;display:grid;place-items:center;color:#aaa">No embed URL available.</div>`;
   closeDetail(); $("#playerModal").classList.add("open");
 }
 function closePlayer(){ $("#playerModal").classList.remove("open"); $("#playerBox").innerHTML=""; }

@@ -26,8 +26,7 @@ function normalizeLive(raw) {
 
       const tmdb = item.TMDB_DATA || {};
       const images = item.IMAGES || {};
-
-      out.push({
+      const base = {
         sourceId: tmdbId,
         tmdbId,
         title: item.title || "Untitled",
@@ -49,7 +48,48 @@ function normalizeLive(raw) {
         status: item.status || "Unknown",
         language: item.language || "",
         type: item.type || ""
-      });
+      };
+
+      const seasons = asArray(item.seasons);
+
+      if (group === "movies") {
+        out.push({
+          ...base,
+          seasonNumber: 1,
+          label: "Movie",
+          episodeCount: 1
+        });
+        continue;
+      }
+
+      if (seasons.length) {
+        for (const season of seasons) {
+          const seasonNumber = Number(
+            season.seasonNumber ?? season.season ?? 1
+          ) || 1;
+
+          const totalEpisodes = Number(
+            season.totalEpisodes ??
+            season.episodeCount ??
+            season.episodes ??
+            0
+          ) || 0;
+
+          out.push({
+            ...base,
+            seasonNumber,
+            label: `Season ${seasonNumber}`,
+            episodeCount: totalEpisodes
+          });
+        }
+      } else {
+        out.push({
+          ...base,
+          seasonNumber: 1,
+          label: "Season 1",
+          episodeCount: 0
+        });
+      }
     }
   }
 
@@ -64,7 +104,7 @@ function mergeCatalog(seedCatalog, live) {
   const byId = new Map();
 
   for (const old of oldEntries) {
-    const id = String(old.tmdbId || old.sourceId || old.id || "");
+    const id = `${String(old.tmdbId || old.sourceId || old.id || "")}:${Number(old.seasonNumber||1)}`;
     if (id) {
       if (!byId.has(id)) byId.set(id, []);
       byId.get(id).push(old);
@@ -72,7 +112,8 @@ function mergeCatalog(seedCatalog, live) {
   }
 
   for (const item of live) {
-    const matches = byId.get(String(item.tmdbId || item.sourceId)) || [];
+    const matchKey = `${String(item.tmdbId || item.sourceId)}:${Number(item.seasonNumber||1)}`;
+    const matches = byId.get(matchKey) || [];
 
     if (matches.length) {
       for (const old of matches) {
