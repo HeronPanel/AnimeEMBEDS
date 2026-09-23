@@ -4,11 +4,11 @@
   "sourceApi": "https://blakiteapi.xyz/api/getAllAnime.php",
   "description": "Complete public catalog snapshot with posters, metadata, tags, seasons, episodes, embeds, and download links.",
   "counts": {
-    "entries": 431,
+    "entries": 432,
     "seriesSeasons": 378,
     "movies": 50,
     "dramaSeasons": 3,
-    "episodes": 6078
+    "episodes": 6079
   },
   "anime": [
     {
@@ -50005,6 +50005,43 @@
         }
       ],
       "sourceUrl": "https://bandbudh-aur-budbak-ep1.netlify.app/ep1.mp4"
+    },
+    {
+      "id": 432,
+      "sourceId": "900003",
+      "tmdbId": "900003",
+      "title": "Bandbudh Aur Budbak Season 2",
+      "category": "series",
+      "seasonNumber": 2,
+      "label": "Season 2",
+      "posterUrl": "https://i.pinimg.com/736x/5e/be/4d/5ebe4d4ccb1b3d427c53d25b82038868.jpg",
+      "tags": [
+        "Bandbudh Aur Budbak",
+        "Hindi",
+        "Comedy",
+        "Cartoon"
+      ],
+      "genres": [
+        "Comedy",
+        "Animation"
+      ],
+      "description": "Bandbudh Aur Budbak - Season 2",
+      "year": null,
+      "rating": "N/A",
+      "status": "Completed",
+      "language": "Hindi",
+      "type": "series",
+      "episodeCount": 1,
+      "sourceUrl": "https://bandbudh-aur-budbak.yodhwajhome.workers.dev/",
+      "embedType": "video",
+      "episodes": [
+        {
+          "number": 1,
+          "watchUrl": "https://bandbudh-aur-budbak.yodhwajhome.workers.dev/",
+          "embedUrl": "https://bandbudh-aur-budbak.yodhwajhome.workers.dev/",
+          "downloadUrl": "https://bandbudh-aur-budbak.yodhwajhome.workers.dev/"
+        }
+      ]
     }
   ]
 }
