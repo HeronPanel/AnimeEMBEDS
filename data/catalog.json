@@ -4,11 +4,11 @@
   "sourceApi": "https://blakiteapi.xyz/api/getAllAnime.php",
   "description": "Complete public catalog snapshot with posters, metadata, tags, seasons, episodes, embeds, and download links.",
   "counts": {
-    "entries": 429,
-    "seriesSeasons": 376,
+    "entries": 431,
+    "seriesSeasons": 378,
     "movies": 50,
     "dramaSeasons": 3,
-    "episodes": 6018
+    "episodes": 6078
   },
   "anime": [
     {
@@ -49581,6 +49581,367 @@
           "watchUrl": "https://www.blakiteanime.buzz/2026/09/streaming.html?type=Series&id=00285166&s=1&episode=1",
           "embedUrl": "https://blakiteapi.xyz/embed/00285166/1-1",
           "downloadUrl": "https://blakiteapi.xyz/download/00285166/1-1"
+        }
+      ]
+    },
+    {
+      "id": "bandbudh-aur-budbak",
+      "sourceId": "bandbudh-aur-budbak",
+      "tmdbId": "bandbudh-aur-budbak",
+      "title": "Bandbudh Aur Budbak",
+      "category": "series",
+      "seasonNumber": 1,
+      "label": "Season 1",
+      "posterUrl": "https://i.pinimg.com/736x/5e/be/4d/5ebe4d4ccb1b3d427c53d25b82038868.jpg",
+      "tags": [
+        "Bandbudh Aur Budbak",
+        "Hindi",
+        "Comedy",
+        "Cartoon"
+      ],
+      "genres": [
+        "Comedy",
+        "Animation"
+      ],
+      "description": "Bandbudh Aur Budbak - Season 1",
+      "year": null,
+      "rating": "N/A",
+      "status": "Completed",
+      "language": "Hindi",
+      "type": "series",
+      "episodeCount": 52,
+      "sourceUrl": "",
+      "embedType": "video",
+      "episodes": [
+        {
+          "number": 1,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep1.netlify.app/ep1.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep1.netlify.app/ep1.mp4"
+        },
+        {
+          "number": 2,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep2.netlify.app/ep2.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep2.netlify.app/ep2.mp4"
+        },
+        {
+          "number": 3,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep3.netlify.app/ep3.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep3.netlify.app/ep3.mp4"
+        },
+        {
+          "number": 4,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep4.netlify.app/ep4.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep4.netlify.app/ep4.mp4"
+        },
+        {
+          "number": 5,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep5.netlify.app/ep5.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep5.netlify.app/ep5.mp4"
+        },
+        {
+          "number": 6,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep6.netlify.app/ep6.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep6.netlify.app/ep6.mp4"
+        },
+        {
+          "number": 7,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep7.netlify.app/ep7.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep7.netlify.app/ep7.mp4"
+        },
+        {
+          "number": 8,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep8.netlify.app/ep8.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep8.netlify.app/ep8.mp4"
+        },
+        {
+          "number": 9,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep9.netlify.app/ep9.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep9.netlify.app/ep9.mp4"
+        },
+        {
+          "number": 10,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep10.netlify.app/ep10.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep10.netlify.app/ep10.mp4"
+        },
+        {
+          "number": 11,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep11.netlify.app/ep11.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep11.netlify.app/ep11.mp4"
+        },
+        {
+          "number": 12,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep12.netlify.app/ep12.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep12.netlify.app/ep12.mp4"
+        },
+        {
+          "number": 13,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep13.netlify.app/ep13.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep13.netlify.app/ep13.mp4"
+        },
+        {
+          "number": 14,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep14.netlify.app/ep14.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep14.netlify.app/ep14.mp4"
+        },
+        {
+          "number": 15,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep15.netlify.app/ep15.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep15.netlify.app/ep15.mp4"
+        },
+        {
+          "number": 16,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep16.netlify.app/ep16.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep16.netlify.app/ep16.mp4"
+        },
+        {
+          "number": 17,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep17.netlify.app/ep17.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep17.netlify.app/ep17.mp4"
+        },
+        {
+          "number": 18,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep18.netlify.app/ep18.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep18.netlify.app/ep18.mp4"
+        },
+        {
+          "number": 19,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep19.netlify.app/ep19.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep19.netlify.app/ep19.mp4"
+        },
+        {
+          "number": 20,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep20.netlify.app/ep20.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep20.netlify.app/ep20.mp4"
+        },
+        {
+          "number": 21,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep21.netlify.app/ep21.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep21.netlify.app/ep21.mp4"
+        },
+        {
+          "number": 22,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep22.netlify.app/ep22.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep22.netlify.app/ep22.mp4"
+        },
+        {
+          "number": 23,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep23.netlify.app/ep23.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep23.netlify.app/ep23.mp4"
+        },
+        {
+          "number": 24,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep24.netlify.app/ep24.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep24.netlify.app/ep24.mp4"
+        },
+        {
+          "number": 25,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep25.netlify.app/ep25.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep25.netlify.app/ep25.mp4"
+        },
+        {
+          "number": 26,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep26.netlify.app/ep26.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep26.netlify.app/ep26.mp4"
+        },
+        {
+          "number": 27,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep27.netlify.app/ep27.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep27.netlify.app/ep27.mp4"
+        },
+        {
+          "number": 28,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep28.netlify.app/ep28.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep28.netlify.app/ep28.mp4"
+        },
+        {
+          "number": 29,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep29.netlify.app/ep29.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep29.netlify.app/ep29.mp4"
+        },
+        {
+          "number": 30,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep30.netlify.app/ep30.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep30.netlify.app/ep30.mp4"
+        },
+        {
+          "number": 31,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep31.netlify.app/ep31.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep31.netlify.app/ep31.mp4"
+        },
+        {
+          "number": 32,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep32.netlify.app/ep32.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep32.netlify.app/ep32.mp4"
+        },
+        {
+          "number": 33,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep33.netlify.app/ep33.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep33.netlify.app/ep33.mp4"
+        },
+        {
+          "number": 34,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep34.netlify.app/ep34.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep34.netlify.app/ep34.mp4"
+        },
+        {
+          "number": 35,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep35.netlify.app/ep35.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep35.netlify.app/ep35.mp4"
+        },
+        {
+          "number": 36,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep36.netlify.app/ep36.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep36.netlify.app/ep36.mp4"
+        },
+        {
+          "number": 37,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep37.netlify.app/ep37.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep37.netlify.app/ep37.mp4"
+        },
+        {
+          "number": 38,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep38.netlify.app/ep38.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep38.netlify.app/ep38.mp4"
+        },
+        {
+          "number": 39,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep39.netlify.app/ep39.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep39.netlify.app/ep39.mp4"
+        },
+        {
+          "number": 40,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep40.netlify.app/ep40.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep40.netlify.app/ep40.mp4"
+        },
+        {
+          "number": 41,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep41.netlify.app/ep41.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep41.netlify.app/ep41.mp4"
+        },
+        {
+          "number": 42,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep42.netlify.app/ep42.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep42.netlify.app/ep42.mp4"
+        },
+        {
+          "number": 43,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep43.netlify.app/ep43.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep43.netlify.app/ep43.mp4"
+        },
+        {
+          "number": 44,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep44.netlify.app/ep44.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep44.netlify.app/ep44.mp4"
+        },
+        {
+          "number": 45,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep45.netlify.app/ep45.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep45.netlify.app/ep45.mp4"
+        },
+        {
+          "number": 46,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep46.netlify.app/ep46.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep46.netlify.app/ep46.mp4"
+        },
+        {
+          "number": 47,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep47.netlify.app/ep47.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep47.netlify.app/ep47.mp4"
+        },
+        {
+          "number": 48,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep48.netlify.app/ep48.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep48.netlify.app/ep48.mp4"
+        },
+        {
+          "number": 49,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep49.netlify.app/ep49.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep49.netlify.app/ep49.mp4"
+        },
+        {
+          "number": 50,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep50.netlify.app/ep50.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep50.netlify.app/ep50.mp4"
+        },
+        {
+          "number": 51,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep51.netlify.app/ep51.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep51.netlify.app/ep51.mp4"
+        },
+        {
+          "number": 52,
+          "watchUrl": "https://bandbudh-aur-budbak-s1-ep52.netlify.app/ep52.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-s1-ep52.netlify.app/ep52.mp4"
+        }
+      ]
+    },
+    {
+      "id": "bandbudh-aur-budbak-2-0",
+      "sourceId": "bandbudh-aur-budbak-2-0",
+      "tmdbId": "bandbudh-aur-budbak-2-0",
+      "title": "Bandbudh Aur Budbak 2.0",
+      "category": "series",
+      "seasonNumber": 1,
+      "label": "B",
+      "posterUrl": "https://cdn.moviefone.com/image-assets/335678/vPHqIs9NC4uWzqviSTZ7ZkZpzEV.jpg?d=480x720&q=50",
+      "tags": [
+        "Bandbudh Aur Budbak",
+        "Hindi",
+        "Comedy",
+        "Cartoon"
+      ],
+      "genres": [
+        "Comedy",
+        "Animation"
+      ],
+      "description": "Bandbudh Aur Budbak 2.0",
+      "year": null,
+      "rating": "N/A",
+      "status": "Completed",
+      "language": "Hindi",
+      "type": "ORG",
+      "episodeCount": 8,
+      "embedType": "video",
+      "episodes": [
+        {
+          "number": 1,
+          "watchUrl": "https://bandbudh-aur-budbak-ep1.netlify.app/ep1.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep1.netlify.app/ep1.mp4"
+        },
+        {
+          "number": 2,
+          "watchUrl": "https://bandbudh-aur-budbak-ep2.netlify.app/ep2.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep2.netlify.app/ep2.mp4"
+        },
+        {
+          "number": 3,
+          "watchUrl": "https://bandbudh-aur-budbak-ep3.netlify.app/ep3.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep3.netlify.app/ep3.mp4"
+        },
+        {
+          "number": 4,
+          "watchUrl": "https://bandbudh-aur-budbak-ep4.netlify.app/ep4.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep4.netlify.app/ep4.mp4"
+        },
+        {
+          "number": 5,
+          "watchUrl": "https://bandbudh-aur-budbak-ep5.netlify.app/ep5.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep5.netlify.app/ep5.mp4"
+        },
+        {
+          "number": 6,
+          "watchUrl": "https://bandbudh-aur-budbak-ep6.netlify.app/ep6.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep6.netlify.app/ep6.mp4"
+        },
+        {
+          "number": 7,
+          "watchUrl": "https://bandbudh-aur-budbak-ep7.netlify.app/ep7.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep7.netlify.app/ep7.mp4"
+        },
+        {
+          "number": 8,
+          "watchUrl": "https://bandbudh-aur-budbak-ep8.netlify.app/ep8.mp4",
+          "videoUrl": "https://bandbudh-aur-budbak-ep8.netlify.app/ep8.mp4"
         }
       ]
     }
