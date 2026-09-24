@@ -125,6 +125,40 @@ a{text-decoration:none;color:inherit}
 .poster{aspect-ratio:2/3;background:#0c1613;position:relative;overflow:hidden}
 .poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
 .card:hover .poster img{transform:scale(1.06)}
+.poster::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  background:rgba(0,0,0,.35);
+  transition:opacity .25s var(--ease);
+  pointer-events:none;
+}
+.poster::before{
+  content:"";
+  position:absolute;
+  top:50%;left:50%;
+  width:0;height:0;
+  border-style:solid;
+  border-width:14px 0 14px 22px;
+  border-color:transparent transparent transparent #f4e2a1;
+  transform:translate(-40%,-50%) scale(.8);
+  opacity:0;
+  z-index:1;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));
+  transition:opacity .25s var(--ease), transform .25s var(--ease);
+  pointer-events:none;
+}
+.card:hover .poster::after,
+.card:hover .poster::before{
+  opacity:1;
+}
+.card:hover .poster::before{
+  transform:translate(-40%,-50%) scale(1);
+}
 .badge{
   position:absolute;top:9px;left:9px;background:rgba(5,9,7,.8);
   border:1px solid var(--line-soft);border-radius:7px;padding:5px 7px;font-size:10px;color:#cfe3d6;
@@ -133,6 +167,18 @@ a{text-decoration:none;color:inherit}
   position:absolute;right:9px;top:9px;
   background:linear-gradient(135deg,var(--accent),#f4e2a1);
   color:#231a05;padding:5px 7px;border-radius:7px;font-size:10px;font-weight:800;
+}
+.logo{
+  position:absolute;left:9px;bottom:9px;
+  background:rgba(5,9,7,.85);
+  border:1px solid var(--accent-dim);
+  color:var(--accent);
+  padding:6px 10px;
+  border-radius:7px;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.03em;
+  z-index:1;
 }
 .info{padding:12px}
 .title{
