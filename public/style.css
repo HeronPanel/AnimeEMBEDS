@@ -41,6 +41,18 @@ html,body{
 a{text-decoration:none;color:inherit}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
 
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:url('https://img.magnific.com/free-vector/set-torii-gates-water_52683-44986.jpg');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  filter:sepia(1) hue-rotate(70deg) saturate(4) brightness(.45);
+  z-index:-1;
+}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 6px transparent}}
@@ -173,7 +185,7 @@ a{text-decoration:none;color:inherit}
   background:rgba(5,9,7,.85);
   border:1.5px solid var(--accent);
   color:var(--accent);
-  padding:19px 24px;
+  padding:9px 18px;
   border-radius:999px;
   font-size:19px;
   font-weight:800;
