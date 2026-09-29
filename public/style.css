@@ -439,3 +439,44 @@ button{font-family:inherit}
 @media (max-width:700px){
   .dlBtn{padding:8px 14px;font-size:12px}
 }
+.anylist-banner {
+  text-align: center;
+  margin: 25px auto 30px;
+  padding: 0 20px;
+  max-width: 750px;
+}
+
+.anylist-banner h2 {
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.anylist-banner p {
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.anylist-btn {
+  display: inline-block;
+  padding: 13px 24px;
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.anylist-btn:hover {
+  color: #ffffff;
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35);
+  transform: translateY(-2px);
+}
