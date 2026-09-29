@@ -1,0 +1,16 @@
+{
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/api/catalog", "destination": "/catalog.json" },
+    { "source": "/api/sync-status", "destination": "/sync-meta.json" }
+  ],
+  "headers": [
+    {
+      "source": "/(catalog|sync-meta).json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, s-maxage=900" }]
+    }
+  ]
+}
