@@ -454,3 +454,34 @@ button{font-family:inherit}
 @media (min-width:1600px){
   .grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
 }
+/* ===== Download Button (gold theme) ===== */
+.dlBtn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:10px 18px;
+  border-radius:999px;
+  background:var(--gold-grad);
+  background-size:200% 100%;
+  color:#231a05;
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:.02em;
+  white-space:nowrap;
+  border:1px solid var(--accent);
+  box-shadow:0 8px 22px -10px rgba(212,175,55,.6), inset 0 1px 0 rgba(255,255,255,.35);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease), filter .2s var(--ease);
+}
+.dlBtn:active{transform:scale(.96)}
+
+@media (hover:hover){
+  .dlBtn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+    box-shadow:0 12px 28px -10px rgba(212,175,55,.75), inset 0 1px 0 rgba(255,255,255,.45);
+  }
+}
+
+@media (max-width:700px){
+  .dlBtn{padding:8px 13px;font-size:12px}
+}
