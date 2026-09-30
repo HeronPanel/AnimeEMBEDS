@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "api/catalog.js": {
+      "includeFiles": "data/**",
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/api/sync-status", "destination": "/api/catalog?action=status" },
+    { "source": "/api/sync", "destination": "/api/catalog?action=status" }
+  ]
+}
