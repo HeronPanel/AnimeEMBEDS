@@ -135,6 +135,38 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .generate-btn.loading{cursor:default}
 .generate-btn.loading .bar{width:100%;transition:width 3.2s linear}
 
+/* BUTTON ROW + GLASS TOGGLE */
+.btn-row{display:flex;gap:12px;margin-top:8px}
+.btn-row .generate-btn{margin-top:0;flex:1;min-width:0}
+.glass-btn{
+  position:relative;flex-shrink:0;height:58px;padding:0 22px;border-radius:15px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap;
+  color:var(--text);font:700 14px Sora,sans-serif;letter-spacing:.01em;
+  background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);
+  box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 -10px 24px rgba(139,92,246,.10) inset,0 12px 32px rgba(0,0,0,.35);
+  transition:transform .2s,border-color .2s,box-shadow .2s,background .2s;
+}
+.glass-btn:hover:not(:disabled){
+  transform:translateY(-2px);border-color:rgba(196,181,253,.55);
+  background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.07));
+}
+.glass-btn:active{transform:translateY(0)}
+.glass-btn:disabled{opacity:.55;cursor:default}
+.glass-btn .dot{width:8px;height:8px;border-radius:50%;background:#5d5678;transition:background .2s,box-shadow .2s}
+.glass-btn[aria-pressed="true"]{
+  color:#fff;border-color:rgba(244,114,182,.65);
+  background:linear-gradient(135deg,rgba(244,114,182,.28),rgba(139,92,246,.14));
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 0 32px rgba(244,114,182,.28),0 12px 32px rgba(0,0,0,.35);
+}
+.glass-btn[aria-pressed="true"] .dot{background:var(--pink);box-shadow:0 0 12px var(--pink)}
+
+/* Alternate-server fields */
+.alt-only{display:none}
+.generator-card[data-mode="alt"] .alt-only{display:block}
+.generator-card[data-mode="alt"] .row{grid-template-columns:.8fr .8fr 1.4fr}
+
 /* RESULT */
 .result{display:none;margin-top:26px}
 .result.show{display:block;animation:rise .5s cubic-bezier(.2,.8,.2,1)}
@@ -180,6 +212,9 @@ footer strong{color:var(--lilac);font-weight:600}
   .live{font-size:12px;padding:10px 14px}
   .generator-card{padding:22px;border-radius:22px}
   .row{grid-template-columns:1fr;gap:0}
+  .generator-card[data-mode="alt"] .row{grid-template-columns:1fr 1fr;gap:0 16px}
+  .generator-card[data-mode="alt"] .row .field:last-child{grid-column:1/-1}
+  .btn-row{flex-direction:column}.glass-btn{height:52px;width:100%}
   .info-grid{grid-template-columns:1fr}
   .url-box{flex-direction:column}.copy-btn{height:44px}
 }
@@ -199,14 +234,12 @@ footer strong{color:var(--lilac);font-weight:600}
     <div class="badge">✦ AniList embed generator</div>
     <h1>Watch anime.<span class="grad">Generate embed.</span></h1>
     <p>Enter your AniList ID and episode number to instantly generate an anime embed link.</p>
-    <div class="live" aria-hidden="true">
-      <i>aniembed.se/e/</i><b id="liveId">{id}</b><i>/</i><b id="liveEp">{ep}</b>
-    </div>
+    <div class="live" id="live" aria-hidden="true"></div>
   </section>
 
-  <section class="generator-card">
+  <section class="generator-card" id="card" data-mode="primary">
     <div class="section-title">Generate Anime Embed</div>
-    <div class="section-subtitle">Fill in the details below to create your embed link.</div>
+    <div class="section-subtitle" id="cardSub">Fill in the details below to create your embed link.</div>
 
     <div class="field">
       <label for="anilistId">AniList ID</label>
@@ -215,6 +248,10 @@ footer strong{color:var(--lilac);font-weight:600}
     </div>
 
     <div class="row">
+      <div class="field alt-only">
+        <label for="season">Season</label>
+        <input id="season" type="number" min="1" value="1" placeholder="1" autocomplete="off">
+      </div>
       <div class="field">
         <label for="episode">Episode Number</label>
         <input id="episode" type="number" min="1" placeholder="e.g. 1" autocomplete="off">
@@ -225,9 +262,14 @@ footer strong{color:var(--lilac);font-weight:600}
       </div>
     </div>
 
-    <button id="generateBtn" class="generate-btn" onclick="generateEmbed()">
-      <span class="label">Generate Embed</span><span class="bar"></span>
-    </button>
+    <div class="btn-row">
+      <button id="generateBtn" class="generate-btn" onclick="generateEmbed()">
+        <span class="label">Generate Embed</span><span class="bar"></span>
+      </button>
+      <button id="serverToggle" class="glass-btn" type="button" aria-pressed="false" onclick="toggleServer()">
+        <span class="dot"></span><span>Switch Server</span>
+      </button>
+    </div>
 
     <div id="result" class="result">
       <div class="success-box">
@@ -252,62 +294,105 @@ footer strong{color:var(--lilac);font-weight:600}
 <div id="toast" class="toast">Link copied successfully!</div>
 
 <script>
-/* AnyListEmbed — URL format: https://aniembed.se/e/{anilistId}/{episode} */
+/* AnyListEmbed
+   Server 1 (default) : https://aniembed.se/e/{anilistId}/{episode}
+   Server 2 (switch)  : https://embed.filmu.in/anime/{anilistId}/{season}/{episode}
+   Dono servers sirf AniList ID se chalte hain. Link badalna ho to neeche SERVERS edit karo. */
+
+const SERVERS = {
+  primary:   { host: "aniembed.se/e/",          build: (id, s, e) => "https://aniembed.se/e/" + id + "/" + e },
+  alternate: { host: "embed.filmu.in/anime/",   build: (id, s, e) => "https://embed.filmu.in/anime/" + id + "/" + s + "/" + e }
+};
 
 const $ = id => document.getElementById(id);
+const card = $("card");
+const isAlt = () => card.dataset.mode === "alt";
+const isNum = v => /^[1-9]\d*$/.test(v);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+let busy = false;
 
 /* Live URL preview */
-function syncLive() {
-  [["anilistId","liveId","{id}"],["episode","liveEp","{ep}"]].forEach(([src,dst,ph]) => {
-    const v = $(src).value.trim(), el = $(dst);
-    el.textContent = v || ph;
-    el.classList.toggle("filled", !!v);
-  });
-}
-$("anilistId").addEventListener("input", syncLive);
-$("episode").addEventListener("input", syncLive);
+function renderLive() {
+  const live = $("live");
+  live.textContent = "";
+  const add = (text, val, filled) => {
+    const el = document.createElement(val ? "b" : "i");
+    el.textContent = text;
+    if (filled) el.classList.add("filled");
+    live.appendChild(el);
+  };
+  const v = id => $(id).value.trim();
 
-function generateEmbed() {
+  if (!isAlt()) {
+    add(SERVERS.primary.host);
+    add(v("anilistId") || "{id}", true, !!v("anilistId"));
+    add("/");
+    add(v("episode") || "{ep}", true, !!v("episode"));
+  } else {
+    add(SERVERS.alternate.host);
+    add(v("anilistId") || "{id}", true, !!v("anilistId"));
+    add("/");
+    add(v("season") || "{season}", true, !!v("season"));
+    add("/");
+    add(v("episode") || "{ep}", true, !!v("episode"));
+  }
+}
+["anilistId", "season", "episode"].forEach(id => $(id).addEventListener("input", renderLive));
+
+/* Switch Server */
+function toggleServer() {
+  if (busy) return;
+  const on = !isAlt();
+  card.dataset.mode = on ? "alt" : "primary";
+  $("serverToggle").setAttribute("aria-pressed", String(on));
+  $("cardSub").textContent = on
+    ? "Alternate server on. Enter AniList ID, season and episode."
+    : "Fill in the details below to create your embed link.";
+  $("result").classList.remove("show");
+  renderLive();
+}
+
+function setBusy(on) {
+  busy = on;
+  $("generateBtn").disabled = on;
+  $("serverToggle").disabled = on;
+  $("generateBtn").classList.toggle("loading", on);
+  if (!on) $("generateBtn").querySelector(".label").textContent = "Generate Embed";
+}
+
+async function generateEmbed() {
+  if (busy) return;
+
+  const alt       = isAlt();
   const anilistId = $("anilistId").value.trim();
+  const season    = $("season").value.trim() || "1";
   const episode   = $("episode").value.trim();
-  const button    = $("generateBtn");
-  const label     = button.querySelector(".label");
-  const result    = $("result");
-  const embedUrl  = $("embedUrl");
+  const label     = $("generateBtn").querySelector(".label");
 
   if (!anilistId) { showToast("Please enter your AniList ID."); $("anilistId").focus(); return; }
-  if (!episode)   { showToast("Please enter an episode number."); $("episode").focus(); return; }
-  if (Number(anilistId) < 1) { showToast("Invalid AniList ID."); return; }
-  if (Number(episode) < 1)   { showToast("Invalid episode number."); return; }
+  if (!isNum(anilistId)) { showToast("Invalid AniList ID."); $("anilistId").focus(); return; }
+  if (alt && !isNum(season)) { showToast("Invalid season number."); $("season").focus(); return; }
+  if (!episode) { showToast("Please enter an episode number."); $("episode").focus(); return; }
+  if (!isNum(episode)) { showToast("Invalid episode number."); $("episode").focus(); return; }
 
-  const url = "https://aniembed.se/e/" + encodeURIComponent(anilistId) + "/" + encodeURIComponent(episode);
+  $("result").classList.remove("show");
+  setBusy(true);
 
-  result.classList.remove("show");
-  button.disabled = true;
-  button.classList.add("loading");
+  for (let c = 3; c > 0; c--) {
+    label.textContent = "Generating... " + c;
+    await wait(1000);
+  }
+  label.textContent = "Generating...";
+  await wait(350);
 
-  let count = 3;
-  label.textContent = "Generating... " + count;
-
-  const countdown = setInterval(() => {
-    count--;
-    if (count > 0) {
-      label.textContent = "Generating... " + count;
-    } else {
-      clearInterval(countdown);
-      label.textContent = "Generating...";
-      setTimeout(() => {
-        embedUrl.value = url;
-        result.classList.add("show");
-        label.textContent = "Embed Generated ✓";
-        setTimeout(() => {
-          button.disabled = false;
-          button.classList.remove("loading");
-          label.textContent = "Generate Embed";
-        }, 700);
-      }, 350);
-    }
-  }, 1000);
+  const server = alt ? SERVERS.alternate : SERVERS.primary;
+  $("embedUrl").value = server.build(
+    encodeURIComponent(anilistId), encodeURIComponent(season), encodeURIComponent(episode)
+  );
+  $("result").classList.add("show");
+  label.textContent = "Embed Generated ✓";
+  await wait(700);
+  setBusy(false);
 }
 
 async function copyEmbed() {
@@ -332,8 +417,10 @@ function showToast(message) {
 
 document.addEventListener("keydown", e => {
   if (e.key !== "Enter") return;
-  if (["anilistId","episode","animeName"].includes(document.activeElement.id)) generateEmbed();
+  if (["anilistId", "season", "episode", "animeName"].includes(document.activeElement.id)) generateEmbed();
 });
+
+renderLive();
 </script>
 </body>
 </html>
