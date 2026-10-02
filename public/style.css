@@ -2103,3 +2103,28 @@ body.dark-mode::after {
 }
 .hero-poster img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
 .hero-poster::after { background: linear-gradient(160deg, rgba(255,255,255,.14) 0%, transparent 40%); }
+}
+.trending-row {
+  padding-bottom: 14px;                                   /* gap between cards and the bar */
+  scrollbar-width: thin;                                  /* Firefox + new Chrome/Safari */
+  scrollbar-color: #a855f7 rgba(168, 85, 247, 0.15);      /* thumb | track */
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+}
+
+/* Older WebKit browsers */
+.trending-row::-webkit-scrollbar { height: 8px; background: transparent; }
+.trending-row::-webkit-scrollbar-track {
+  background: rgba(168, 85, 247, 0.15);
+  border-radius: 9999px;
+  margin: 0 4px;
+}
+.trending-row::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #7c3aed, #c026d3);
+  border-radius: 9999px;
+  border: 0;
+}
+.trending-row::-webkit-scrollbar-thumb:hover { background: linear-gradient(90deg, #9333ea, #d946ef); }
+.trending-row::-webkit-scrollbar-button { display: none; width: 0; height: 0; }   /* kills the ◀ ▶ arrows */
+.trending-row::-webkit-scrollbar-corner { background: transparent; }
+}
