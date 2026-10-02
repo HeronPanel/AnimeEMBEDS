@@ -2018,3 +2018,66 @@ html::before { animation: progressGrow linear both; animation-timeline: scroll(r
   box-shadow: 0 36px 70px -10px rgba(0, 0, 0, 0.8), 0 0 75px rgba(192, 132, 252, 0.6);
 }
 @media (max-width: 1080px) { .hero-poster { display: none; } }
+/* ==========================================================================
+   🌌 SITE-WIDE ANIMATED BACKGROUND  (paste at the VERY END of style.css)
+   - Drifting aurora glow + rising twinkling dots
+   - Only transform/opacity animate => smooth scroll, no lag
+   ========================================================================== */
+
+/* 1) Page colour lives on <html>, body turns transparent so the layers show */
+html { background: var(--bg-main); }
+html:has(body.dark-mode) { --bg-main: #0c051d; }   /* keeps dark mode working */
+body { background: transparent; }
+
+/* 2) Aurora: soft colour clouds that slowly drift */
+body::before {
+  content: ""; position: fixed; z-index: -1; pointer-events: none;
+  inset: -25%; top: -25%; left: -25%; right: auto; bottom: auto;
+  width: 150%; height: 150%; border-radius: 0; filter: none; opacity: 1;
+  background:
+    radial-gradient(40% 40% at 20% 25%, rgba(168, 85, 247, .30), transparent 70%),
+    radial-gradient(35% 35% at 80% 20%, rgba(99, 102, 241, .24), transparent 70%),
+    radial-gradient(45% 45% at 70% 80%, rgba(192, 38, 211, .20), transparent 70%),
+    radial-gradient(30% 30% at 25% 85%, rgba(124, 58, 237, .22), transparent 70%);
+  animation: bgDrift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+body.dark-mode::before {
+  background:
+    radial-gradient(40% 40% at 20% 25%, rgba(168, 85, 247, .38), transparent 70%),
+    radial-gradient(35% 35% at 80% 20%, rgba(99, 102, 241, .30), transparent 70%),
+    radial-gradient(45% 45% at 70% 80%, rgba(192, 38, 211, .26), transparent 70%),
+    radial-gradient(30% 30% at 25% 85%, rgba(124, 58, 237, .30), transparent 70%);
+}
+
+/* 3) Particles: two dot layers floating upward + gentle twinkle */
+body::after {
+  content: ""; position: fixed; z-index: -1; pointer-events: none;
+  top: 0; left: 0; right: auto; bottom: auto;
+  width: 100%; height: calc(100% + 240px); border-radius: 0; filter: none;
+  background-image:
+    radial-gradient(circle, rgba(147, 51, 234, .55) 0 2px, transparent 2.5px),
+    radial-gradient(circle, rgba(192, 132, 252, .55) 0 1.5px, transparent 2px);
+  background-size: 240px 240px, 120px 120px;
+  background-position: 40px 60px, 90px 20px;
+  animation: bgRise 24s linear infinite, bgTwinkle 5s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+body.dark-mode::after {
+  background-image:
+    radial-gradient(circle, rgba(216, 180, 254, .65) 0 2px, transparent 2.5px),
+    radial-gradient(circle, rgba(168, 85, 247, .70) 0 1.5px, transparent 2px);
+}
+
+@keyframes bgDrift {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  50%  { transform: translate3d(4%, -3%, 0) rotate(4deg) scale(1.08); }
+  100% { transform: translate3d(-4%, 3%, 0) rotate(-4deg) scale(1.02); }
+}
+@keyframes bgRise    { from { transform: translateY(0); } to { transform: translateY(-240px); } } /* = tile height → seamless loop */
+@keyframes bgTwinkle { from { opacity: .35; } to { opacity: .9; } }
+
+/* 4) Respect users who turn animations off */
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after { animation: none !important; }
+}
