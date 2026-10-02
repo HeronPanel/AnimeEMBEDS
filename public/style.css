@@ -1916,3 +1916,105 @@ html::before {
   body::before, body::after, html::before { display: none; }
   .anime-card:hover, .btn-primary:hover, .nav-btn:hover { transform: none; }
 }
+
+
+/* ==========================================================================
+   ⚡ PERFORMANCE PATCH — smooth scroll (overrides heavy effects above)
+   Only GPU-friendly props (transform/opacity) animate now.
+   ========================================================================== */
+
+/* Biggest culprit: fixed background forces a full repaint on every scroll frame */
+body { background-attachment: scroll; }
+
+/* Aurora: static soft gradients, no blur filter, no animation */
+body::before, body::after { filter: none; animation: none; opacity: .45; width: 60vmax; height: 60vmax; }
+body.dark-mode::before, body.dark-mode::after { opacity: .3; }
+
+/* Progress bar: transform-only (no looping gradient repaint) */
+html::before { animation: progressGrow linear both; animation-timeline: scroll(root); }
+
+/* Kill infinite repaint animations (background-position / box-shadow loops) */
+.site-header::after, .site-footer::before,
+.btn-primary, .nav-btn.active, .filter-pill.active, .alpha-chip.active,
+.genre-cloud-btn.active, .episode-btn.active, .section-title,
+.toast-msg, .feature-icon, .hero-backdrop { animation: none; }
+
+/* Static gradients instead of animated ones */
+.section-title { background: none; -webkit-text-fill-color: currentColor; color: var(--text-title); }
+.btn-primary, .nav-btn.active, .filter-pill.active, .alpha-chip.active,
+.genre-cloud-btn.active, .episode-btn.active { background-size: 100% 100% !important; }
+.hero-backdrop { will-change: auto; }
+
+/* Remove expensive backdrop blurs added earlier; lighten header blur */
+.btn-secondary, .slider-nav-btn { backdrop-filter: none; }
+.anime-card:hover .card-play-overlay { backdrop-filter: none; }
+.site-header { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+/* Entrance keyframes without blur filters */
+@keyframes cardIn { from { opacity: 0; transform: translateY(26px) scale(.95); } to { opacity: 1; transform: none; } }
+@keyframes riseIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+
+/* No 3D layer per card */
+.anime-grid { perspective: none; }
+.anime-card { transform-style: flat; will-change: auto; }
+.anime-card:hover { transform: translateY(-10px) scale(1.035); box-shadow: 0 22px 44px -12px rgba(124,58,237,.5); }
+.anime-card:hover .card-poster img { filter: none; transform: scale(1.1); }
+
+/* Avoid layout-triggering hover effects */
+.anime-card:hover .card-title { letter-spacing: normal; }
+.footer-links a:hover { letter-spacing: normal; }
+
+/* Scroll-reveal off (many view() timelines = jank on mid-range phones) */
+@supports (animation-timeline: view()) {
+  .home-section, .trending-section, .feature-card, .footer-col, .features-grid > * {
+    animation: none; animation-timeline: auto;
+  }
+}
+
+/* Skip rendering offscreen sections */
+.home-section, .trending-section, .site-footer { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+
+
+/* ==========================================================================
+   🎴 HERO: POSTER ON RIGHT + DOT TEXTURE
+   ========================================================================== */
+@keyframes posterIn {
+  from { opacity: 0; transform: translateY(-46%) translateX(50px) rotate(9deg) scale(.92); }
+  to   { opacity: 1; transform: translateY(-50%) rotate(3deg); }
+}
+
+/* Dot-grid texture over the hero background (fades in toward the right) */
+.hero-overlay::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.28) 1.3px, transparent 1.7px),
+    radial-gradient(rgba(192, 132, 252, 0.35) 1.3px, transparent 1.7px);
+  background-size: 18px 18px, 18px 18px;
+  background-position: 0 0, 9px 9px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 15%, #000 65%);
+          mask-image: linear-gradient(90deg, transparent 15%, #000 65%);
+}
+
+/* Poster card (injected by hero-poster.js) */
+.hero-poster {
+  position: absolute; z-index: 3;
+  right: clamp(100px, 9vw, 160px); top: 50%;
+  height: 82%; aspect-ratio: 2 / 3;
+  border-radius: 16px; overflow: hidden;
+  border: 2px solid rgba(216, 180, 254, 0.6);
+  background: #1c0d3d;
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.75), 0 0 55px rgba(168, 85, 247, 0.45);
+  transform: translateY(-50%) rotate(3deg);
+  transition: transform .5s var(--ease-spring), box-shadow .4s;
+  animation: posterIn .9s var(--ease-out-expo) .2s both;
+}
+.hero-poster img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
+.hero-poster::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(160deg, rgba(255,255,255,.22) 0%, transparent 35%, rgba(21,8,51,.45) 100%);
+}
+.hero-slide:hover .hero-poster {
+  transform: translateY(-50%) rotate(0deg) scale(1.04);
+  box-shadow: 0 36px 70px -10px rgba(0, 0, 0, 0.8), 0 0 75px rgba(192, 132, 252, 0.6);
+}
+@media (max-width: 1080px) { .hero-poster { display: none; } }
