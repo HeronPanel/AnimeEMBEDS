@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ToonFLIX — Free HD Anime Streaming</title>
+  <meta name="description" content="Watch Hindi & English Dubbed & Subbed Anime Online Free in Full HD on ToonFLIX. Browse A to Z anime catalog, movies, series and latest releases.">
+
+  <!-- Google Fonts: Plus Jakarta Sans for crisp, modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet (Purple & White Theme) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Toast Notification Message -->
+  <div id="toast-msg" class="toast-msg"></div>
+
+  <!-- Cinema Mode Lights-Off Backdrop -->
+  <div id="cinema-dim-backdrop" class="cinema-dim-backdrop"></div>
+
+  <!-- ==========================================================================
+       SITE HEADER
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="header-container">
+      
+      <!-- Brand Logo -->
+      <a href="javascript:void(0)" class="logo" id="header-logo" aria-label="ToonFLIX home" onclick="window.blakiteApp.setNavActive('home')">
+        <img class="logo-img" src="logo.png" alt="ToonFLIX" width="700" height="138">
+      </a>
+
+      <!-- Navigation Links (Interactive Purple Pill Tabs) -->
+      <nav class="nav-links" id="main-nav">
+        <button class="nav-btn active" data-nav="home" onclick="window.blakiteApp.setNavActive('home')">Home</button>
+        <button class="nav-btn" data-nav="az" onclick="window.blakiteApp.setNavActive('az')">A-Z List</button>
+        <button class="nav-btn" data-nav="series" onclick="window.blakiteApp.setNavActive('series', 'series')">Series</button>
+        <button class="nav-btn" data-nav="movie" onclick="window.blakiteApp.setNavActive('movie', 'movie')">Movies</button>
+        <button class="nav-btn" data-nav="drama" onclick="window.blakiteApp.setNavActive('drama', 'drama')">Dramas</button>
+      </nav>
+
+      <!-- Live Search Bar -->
+      <div class="search-wrapper">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Search anime, genres, Hindi Dub..." autocomplete="off">
+          <button id="clear-search-btn" class="clear-search-btn" title="Clear">&times;</button>
+          <button id="search-btn" class="search-action-btn">Search</button>
+        </div>
+
+        <!-- Live Instant Suggestions Dropdown -->
+        <div id="search-dropdown" class="search-dropdown"></div>
+      </div>
+
+      <!-- Action Buttons: Theme Toggle & Surprise Me -->
+      <div class="header-actions">
+        <!-- Theme Switcher (Purple & White / Dark Mode with Flat SVG Icon) -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" title="Switch Theme (Purple & White / Dark)" onclick="window.blakiteApp.toggleTheme()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+        <!-- Surprise Me / Random Anime Button -->
+        <button id="random-btn" class="random-btn" title="Watch a random anime title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
+          Surprise Me
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       DEDICATED SEARCH RESULTS SECTION (SHOWS RESULTS - NO DIRECT AUTOPLAY)
+       ========================================================================== -->
+  <section id="search-results-section" class="search-results-section">
+    <div class="search-results-header">
+      <div class="search-results-title-group">
+        <h2>
+          Search Results: <span id="search-query-display" class="search-query-badge"></span>
+        </h2>
+        <div id="search-results-count" class="search-count-text">Found 0 matching anime</div>
+      </div>
+      <button id="close-search-results-btn" class="close-search-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Back to All Anime
+      </button>
+    </div>
+
+    <!-- Search Results Cards Grid -->
+    <div id="search-results-grid" class="anime-grid">
+      <!-- Dynamically filled with matching anime cards -->
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HERO BANNER / FEATURED SLIDER (16:9 PROPORTIONED)
+       ========================================================================== -->
+  <section id="hero-section" class="hero-section">
+    <div id="hero-slider" class="hero-slider">
+      <!-- Dynamically filled with top featured anime -->
+    </div>
+
+    <!-- Slider Navigation Buttons -->
+    <button id="slider-prev" class="slider-nav-btn slider-prev" aria-label="Previous">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button id="slider-next" class="slider-nav-btn slider-next" aria-label="Next">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+
+    <!-- Slider Dots -->
+    <div id="slider-dots" class="slider-dots"></div>
+  </section>
+
+  <!-- ==========================================================================
+       TRENDING & RECOMMENDED ROW (UNDER HERO)
+       ========================================================================== -->
+  <section id="trending-section" class="trending-section">
+    <div class="section-header">
+      <h2 class="section-title">Trending & Recommended</h2>
+      <span style="font-size: 13px; color: var(--purple-bright); font-weight: 700;">Swipe for more &rarr;</span>
+    </div>
+    <div id="trending-row" class="trending-row">
+      <!-- Dynamically filled with recommended anime cards -->
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MAIN BROWSE VIEW (A-Z LIST & COMPLETE CATALOG)
+       ========================================================================== -->
+  <div id="browse-view">
+    
+    <!-- Controls, A-Z Alphabet Filter & Category Toolbar -->
+    <div class="catalog-controls" id="catalog-controls">
+      
+      <!-- A to Z Alphabet Bar -->
+      <div class="alphabet-nav-wrapper">
+        <div class="alphabet-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+          A - Z Anime Directory
+        </div>
+        <div id="alphabet-bar" class="alphabet-bar">
+          <!-- Populated dynamically: ALL, #, A, B, C, ... Z -->
+        </div>
+      </div>
+
+      <!-- Categories & Filter Row -->
+      <div class="filter-row">
+        <!-- Category Pills -->
+        <div class="filter-group" id="category-pills">
+          <button class="filter-pill active" data-cat="all">All Anime</button>
+          <button class="filter-pill" data-cat="series">Series</button>
+          <button class="filter-pill" data-cat="movie">Movies</button>
+          <button class="filter-pill" data-cat="drama">Dramas</button>
+        </div>
+
+        <!-- Dropdowns: Language, Status, Sort -->
+        <div class="filter-group">
+          <!-- Language Select -->
+          <select id="language-select" class="select-styled" title="Filter by Language">
+            <option value="all">All Languages</option>
+          </select>
+
+          <!-- Status Select -->
+          <select id="status-select" class="select-styled" title="Filter by Status">
+            <option value="all">All Status</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="completed">Completed / Released</option>
+          </select>
+
+          <!-- Sort Select -->
+          <select id="sort-select" class="select-styled" title="Sort By">
+            <option value="latest">Latest Added</option>
+            <option value="rating">Top Rated</option>
+            <option value="title">Title (A - Z)</option>
+            <option value="episodes">Most Episodes</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Anime Grid Catalog -->
+    <main class="catalog-section" id="catalog-section">
+      <div id="anime-grid" class="anime-grid">
+        <!-- Dynamically rendered anime cards -->
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--purple-bright); animation: spin 1.2s linear infinite;"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>
+          </div>
+          <div class="empty-title">Loading Anime Catalog...</div>
+          <p>Fetching the latest episodes...</p>
+        </div>
+      </div>
+
+      <!-- Load More Pagination -->
+      <div id="load-more-container" class="pagination-area" style="display: none;">
+        <button id="load-more-btn" class="load-more-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Load More Anime
+        </button>
+      </div>
+    </main>
+
+    <!-- ==========================================================================
+         HOMEPAGE BOTTOM SECTION 1: EXPLORE BY POPULAR GENRES
+         ========================================================================== -->
+    <section class="home-section" id="genres-section">
+      <div class="section-header">
+        <h2 class="section-title">Explore by Popular Genres</h2>
+      </div>
+      <div id="genre-cloud" class="genre-cloud">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         HOMEPAGE BOTTOM SECTION 2: WHY TOONFLIX FEATURES
+         ========================================================================== -->
+    <section class="home-section" id="features-section">
+      <div class="section-header">
+        <h2 class="section-title">Why Watch on ToonFLIX?</h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3 class="feature-title">Ultra-Fast Streaming</h3>
+          <p class="feature-desc">High-speed CDN servers ensure buffer-free anime streaming in crisp 1080p and 720p HD resolution.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <h3 class="feature-title">Hindi & English Dubs</h3>
+          <p class="feature-desc">Watch in your preferred language with English subtitles, official Hindi dubs, and multi-audio support.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5a1 1 0 0 1-2 0v-4a1 1 0 0 1 2 0zm-1-7.25a1.25 1.25 0 1 1 1.25-1.25A1.25 1.25 0 0 1 12 9.25z"/></svg>
+          </div>
+          <h3 class="feature-title">Cinema Theater Mode</h3>
+          <p class="feature-desc">Enjoy distraction-free anime viewing with our ambient 'Lights Off' cinema mode and 16:9 player.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.8 1.04 6.44 2.73L21 8"/><path d="M21 3v5h-5"/></svg>
+          </div>
+          <h3 class="feature-title">Daily Updated Catalog</h3>
+          <p class="feature-desc">Synchronized directly with latest anime broadcasts, ongoing series episodes, and new movies.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ==========================================================================
+       DEDICATED WATCH / STREAMING THEME & 16:9 PROPORTIONED PLAYER
+       ========================================================================== -->
+  <section id="watch-section" class="watch-section">
+    
+    <!-- Watch Top Navigation & Tools Bar -->
+    <div class="watch-topbar">
+      <button id="back-to-browse-btn" class="back-to-browse-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+        Back to Catalog
+      </button>
+
+      <div class="watch-tools">
+        <button id="cinema-light-btn" class="tool-btn" title="Toggle Cinema Theater Mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/></svg>
+          Cinema Mode
+        </button>
+
+        <button id="share-btn" class="tool-btn" title="Copy shareable episode link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+    </div>
+
+    <!-- Responsive 16:9 Video Player Theater (Constrained Size) -->
+    <div class="player-theater">
+      <div class="player-screen">
+        <iframe id="player-frame" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+      </div>
+
+      <!-- Quick Player Controls -->
+      <div class="player-controls-bar">
+        <div id="current-playing-title" class="current-playing-title">
+          Loading Title...
+          <span class="ep-indicator" id="ep-indicator">EP 1</span>
+        </div>
+
+        <div class="player-nav-btns">
+          <button id="prev-ep-btn" class="nav-ep-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            Prev Episode
+          </button>
+          <button id="next-ep-btn" class="nav-ep-btn">
+            Next Episode
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Watch View Grid Layout: Details & Episode Selector -->
+    <div class="watch-grid-layout">
+      
+      <!-- Left Column: Anime Details -->
+      <div class="anime-details-card">
+        <div class="anime-details-top">
+          <img id="details-poster" class="details-poster" src="" alt="Anime Poster">
+          <div class="details-meta-col">
+            <h1 id="details-title" class="details-title">Anime Title</h1>
+            <div id="details-badges" class="details-badges-row"></div>
+            <p id="details-synopsis" class="details-synopsis">Loading synopsis...</p>
+            <div id="details-genres" class="details-genres-list"></div>
+            <div style="margin-top: 20px;">
+              <button id="watch-trailer-btn" class="btn-secondary" style="display: none;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                Watch Trailer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Episode Selector Grid -->
+      <div class="episodes-card" id="episodes-card">
+        <div class="episodes-header">
+          <div class="episodes-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/></svg>
+            Episodes
+          </div>
+        </div>
+
+        <!-- Season Selector (if multi-season) -->
+        <div id="season-select-wrapper" class="season-select-wrapper" style="display: none;">
+          <select id="season-select" class="select-styled" style="width: 100%;">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <!-- Scrollable Episodes Buttons Grid -->
+        <div id="episodes-list" class="episodes-scroll-list">
+          <!-- Populated dynamically: EP 1, EP 2, ... -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recommendations Under Watch Player ("More Like This") -->
+    <div style="max-width: 980px; margin: 40px auto 0;">
+      <div class="section-header">
+        <h2 class="section-title">More Like This</h2>
+      </div>
+      <div id="watch-recommendations" class="anime-grid">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       TRAILER MODAL
+       ========================================================================== -->
+  <div id="trailer-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div style="font-weight: 800; font-size: 16px; color: var(--text-title);">Official Trailer</div>
+        <button id="close-trailer-btn" class="modal-close-btn">&times;</button>
+      </div>
+      <div style="aspect-ratio: 16 / 9; width: 100%; background: #000;">
+        <iframe id="trailer-frame" src="" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       RICH MODERN FOOTER (PURPLE & WHITE)
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      
+      <!-- Col 1: About Brand -->
+      <div class="footer-col">
+        <div class="logo" style="margin-bottom: 14px;">
+          <img class="logo-img logo-img-footer" src="logo.png" alt="ToonFLIX" width="700" height="138">
+        </div>
+        <p>
+          ToonFLIX provides free online streaming for thousands of anime series, movies, and dramas in high definition with English and Hindi dubs & subs. Completely ad-friendly, lightning fast, and lightweight.
+        </p>
+      </div>
+
+      <!-- Col 2: Quick Links -->
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)" onclick="window.blakiteApp.setNavActive('home')">Home</a></li>
+          <li><a href="#trending-section" onclick="window.blakiteApp.closeSearchResults()">Trending Now</a></li>
+          <li><a href="#alphabet-bar" onclick="window.blakiteApp.setNavActive('az')">A - Z Complete List</a></li>
+          <li><a href="#genres-section" onclick="window.blakiteApp.closeSearchResults()">Popular Genres</a></li>
+          <li><a href="javascript:void(0)" onclick="window.blakiteApp.surpriseMe()">Random Anime</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Categories -->
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)" onclick="window.blakiteApp.setNavActive('series', 'series')">Anime Series</a></li>
+          <li><a href="javascript:void(0)" onclick="window.blakiteApp.setNavActive('movie', 'movie')">Anime Movies</a></li>
+          <li><a href="javascript:void(0)" onclick="window.blakiteApp.setNavActive('drama', 'drama')">Asian Dramas</a></li>
+          <li><a href="javascript:void(0)" onclick="window.blakiteApp.filterByGenre('Action')">Action Anime</a></li>
+          <li><a href="javascript:void(0)" onclick="window.blakiteApp.filterByGenre('Fantasy')">Fantasy & Isekai</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Platform Info -->
+      <div class="footer-col">
+        <h4>Audio & Quality</h4>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)">1080p Full HD</a></li>
+          <li><a href="javascript:void(0)">720p Fast Stream</a></li>
+          <li><a href="javascript:void(0)">Hindi Subbed & Dubbed</a></li>
+          <li><a href="javascript:void(0)">English Dubbed & Subbed</a></li>
+          <li><a href="javascript:void(0)">Daily Episode Releases</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom Copyright & Back to Top -->
+    <div class="footer-bottom">
+      <div>&copy; 2026 ToonFLIX. All Rights Reserved.</div>
+      <button id="back-to-top-btn" class="back-to-top-btn">Back to Top &uarr;</button>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "toonflix",
+  "version": "3.0.0",
+  "private": true,
+  "description": "ToonFLIX - self-updating anime embed catalog (Vercel)",
+  "scripts": {
+    "start": "node scripts/dev-server.js",
+    "sync": "node scripts/sync.js",
+    "dev": "npx vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
