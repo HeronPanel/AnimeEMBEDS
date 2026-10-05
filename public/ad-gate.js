@@ -43,7 +43,7 @@
   var lock = document.createElement("div");
   lock.id = "ag-lock";
   lock.innerHTML = '<div class="ag-ico">🔒</div><h3>Episode locked</h3>' +
-    '<p>EP 1 is free. View a sponsor link once to unlock all episodes of this anime.</p>' +
+    '<p>View a sponsor link once to unlock all episodes of this anime.</p>' +
     '<button type="button" class="ag-btn" id="ag-lock-btn" style="max-width:260px">Unlock all episodes</button>';
   screen.appendChild(lock);
 
