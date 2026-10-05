@@ -449,5 +449,57 @@
 
   <!-- Application Logic -->
   <script src="app.js"></script>
+
+<button id="ad-timer" type="button"><span class="ad-dot"></span><span id="ad-timer-text">Next ad in 10:00</span></button>
+  
+<script>
+(function () {
+  var LINKS = [
+    "https://www.profitableratecpmnetwork.com/ewf296sbz?key=8927b00432f278a40fa82e0bdcd73df6",
+    "https://www.profitableratecpmnetwork.com/e0znzad6s?key=02065c514ea6d17af318daf31bc47159",
+    "https://www.profitableratecpmnetwork.com/tvpeif1a9?key=3ddf1f37d84e07515762428262b7537a",
+    "https://www.profitableratecpmnetwork.com/sbukyg4q1?key=d27f390f0d7cf6415cb8ef9077dc6a6f"
+  ];
+  var INTERVAL = 10 * 60 * 1000;           // 10 minutes
+  var KEY = "adNextTime";
+  var btn = document.getElementById("ad-timer");
+  var txt = document.getElementById("ad-timer-text");
+ 
+  function getNext() {
+    var t = 0;
+    try { t = parseInt(localStorage.getItem(KEY), 10); } catch (e) {}
+    if (!t || isNaN(t)) { t = Date.now() + INTERVAL; setNext(t); }
+    return t;
+  }
+  function setNext(t) { try { localStorage.setItem(KEY, String(t)); } catch (e) {} }
+  function fmt(ms) {
+    var s = Math.max(0, Math.ceil(ms / 1000));
+    return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  }
+ 
+  var next = getNext();
+  function tick() {
+    var left = next - Date.now();
+    if (left <= 0) {
+      btn.classList.add("ready");
+      txt.textContent = "Ad ready - click here";
+    } else {
+      btn.classList.remove("ready");
+      txt.textContent = "Next ad in " + fmt(left);
+    }
+  }
+ 
+  btn.addEventListener("click", function () {
+    if (next - Date.now() > 0) return;      // timer abhi pura nahi hua
+    LINKS.forEach(function (u) { window.open(u, "_blank", "noopener"); });
+    next = Date.now() + INTERVAL;           // timer reset
+    setNext(next);
+    tick();
+  });
+ 
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
 </body>
 </html>
