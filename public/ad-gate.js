@@ -5,7 +5,7 @@
     "https://www.profitableratecpmnetwork.com/tvpeif1a9?key=3ddf1f37d84e07515762428262b7537a",
     "https://www.profitableratecpmnetwork.com/sbukyg4q1?key=d27f390f0d7cf6415cb8ef9077dc6a6f"
   ];
-  var WAIT_SECONDS = 10;          // sponsor link kholne ke baad itne second ruko
+  var WAIT_SECONDS = 10;          // seconds to wait after opening the sponsor link
   var STORE = "ag_unlocked_v1";
 
   var $ = function (id) { return document.getElementById(id); };
@@ -43,14 +43,14 @@
   var lock = document.createElement("div");
   lock.id = "ag-lock";
   lock.innerHTML = '<div class="ag-ico">🔒</div><h3>Episode locked</h3>' +
-    '<p>EP 1 free hai. Is anime ke saare episodes unlock karne ke liye ek baar sponsor link dekhein.</p>' +
+    '<p>EP 1 is free. View a sponsor link once to unlock all episodes of this anime.</p>' +
     '<button type="button" class="ag-btn" id="ag-lock-btn" style="max-width:260px">Unlock all episodes</button>';
   screen.appendChild(lock);
 
   var modal = document.createElement("div");
   modal.id = "ag-modal";
-  modal.innerHTML = '<div class="ag-card"><h3>Saare episodes unlock karein</h3>' +
-    '<p id="ag-msg">Ek sponsor link khulega. Wapas aakar ' + WAIT_SECONDS + ' second ruko, phir is anime ke <b>saare episodes</b> unlock ho jayenge.</p>' +
+  modal.innerHTML = '<div class="ag-card"><h3>Unlock all episodes</h3>' +
+    '<p id="ag-msg">A sponsor link will open. Come back and wait ' + WAIT_SECONDS + ' seconds, then <b>all episodes</b> of this anime will be unlocked.</p>' +
     '<div class="ag-bar" id="ag-bar"><i id="ag-fill"></i></div>' +
     '<button type="button" class="ag-btn" id="ag-go">Open sponsor link</button>' +
     '<button type="button" class="ag-link" id="ag-cancel">Cancel</button></div>';
@@ -64,7 +64,7 @@
     clearInterval(timer); timer = null;
     $("ag-bar").style.display = "none"; $("ag-fill").style.width = "0";
     var go = $("ag-go"); go.disabled = false; go.className = "ag-btn"; go.textContent = "Open sponsor link";
-    $("ag-msg").innerHTML = 'Ek sponsor link khulega. Wapas aakar ' + WAIT_SECONDS + ' second ruko, phir is anime ke <b>saare episodes</b> unlock ho jayenge.';
+    $("ag-msg").innerHTML = 'A sponsor link will open. Come back and wait ' + WAIT_SECONDS + ' seconds, then <b>all episodes</b> of this anime will be unlocked.';
   }
 
   $("ag-go").addEventListener("click", function () {
@@ -74,7 +74,7 @@
     go.disabled = true;
     var left = WAIT_SECONDS;
     $("ag-bar").style.display = "block";
-    $("ag-msg").textContent = "Sponsor page dekhne ke liye shukriya! Unlock ho raha hai...";
+    $("ag-msg").textContent = "Thanks for visiting the sponsor page! Unlocking...";
     go.textContent = "Unlocking in " + left + "s";
     setTimeout(function () { $("ag-fill").style.width = "100%"; }, 30);
     $("ag-fill").style.transitionDuration = WAIT_SECONDS + "s";
