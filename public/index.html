@@ -14,6 +14,28 @@
   <!-- Main Stylesheet (Purple & White Theme) -->
   <link rel="stylesheet" href="style.css">
   <script src="hero-poster.js" defer></script>
+
+  <style>
+    /* ---- Get Embed popup ---- */
+    .embed-modal{position:fixed;inset:0;z-index:99998;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:16px}
+    .embed-modal.open{display:flex}
+    .embed-box{background:#fff;color:#222;border-radius:16px;padding:22px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.35);font-family:inherit}
+    .embed-box h3{margin:0 0 12px;font-size:18px}
+    .embed-row{display:flex;gap:8px}
+    .embed-row input{flex:1;min-width:0;padding:10px 12px;border:1.5px solid #c9b8f5;border-radius:10px;font-size:14px;font-family:inherit}
+    .embed-row button,.embed-close{padding:10px 16px;border:0;border-radius:10px;background:#7c3aed;color:#fff;font-weight:600;cursor:pointer;font-family:inherit}
+    .embed-close{background:#eee;color:#333;margin-top:14px}
+
+    /* ---- Embed mode: URL ke end me /embed ho to sirf fullscreen player ---- */
+    body.embed-mode > *:not(#watch-section):not(script):not(style){display:none!important}
+    body.embed-mode #watch-section{display:block!important;position:fixed;inset:0;z-index:99999;background:#000;padding:0;margin:0}
+    body.embed-mode .watch-topbar,
+    body.embed-mode .player-controls-bar,
+    body.embed-mode .watch-grid-layout{display:none!important}
+    body.embed-mode .player-theater,
+    body.embed-mode .player-screen{position:fixed;inset:0;width:100%;height:100%;max-width:none;margin:0;padding:0;border-radius:0;aspect-ratio:auto}
+    body.embed-mode #player-frame{width:100%;height:100%;border:0}
+  </style>
 </head>
 <body>
 
@@ -275,9 +297,12 @@
       </button>
 
       <div class="watch-tools">
-        <button id="cinema-light-btn" class="tool-btn" title="Toggle Cinema Theater Mode">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/></svg>
-          Cinema Mode
+        <!-- Hidden stub: app.js ke cinema code ko null error na aaye -->
+        <button id="cinema-light-btn" style="display:none" aria-hidden="true" tabindex="-1"></button>
+
+        <button id="get-embed-btn" class="tool-btn" title="Get embed link for this episode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Get Embed
         </button>
 
         <button id="share-btn" class="tool-btn" title="Copy shareable episode link">
@@ -448,6 +473,65 @@
   </footer>
 
   <!-- Application Logic -->
+  <!-- Get Embed popup -->
+  <div id="embed-modal" class="embed-modal">
+    <div class="embed-box">
+      <h3>Embed Link</h3>
+      <div class="embed-row">
+        <input id="embed-link-input" type="text" readonly>
+        <button id="embed-copy-btn" type="button">Copy</button>
+      </div>
+      <button id="embed-close-btn" class="embed-close" type="button">Close</button>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var BASE = 'https://watchtoonflix.vercel.app/';
+    var re = /^#\/watch\/[^\/]+\/[^\/]+/;
+
+    function isEmbed() { return /\/embed\/?$/.test(location.hash); }
+    function syncMode() { document.body.classList.toggle('embed-mode', isEmbed()); }
+    syncMode();
+    window.addEventListener('hashchange', syncMode);
+
+    function getEmbedLink() {
+      var m = location.hash.match(re);
+      if (!m) return null;
+      return BASE + m[0] + '/embed';
+    }
+
+    var modal = document.getElementById('embed-modal');
+    var input = document.getElementById('embed-link-input');
+
+    function copy(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      }
+      input.select(); document.execCommand('copy');
+      return Promise.resolve();
+    }
+
+    document.getElementById('get-embed-btn').addEventListener('click', function () {
+      var link = getEmbedLink();
+      if (!link) { alert('Pehle koi episode play karo, phir Get Embed dabao.'); return; }
+      input.value = link;
+      modal.classList.add('open');
+      copy(link).catch(function () {});
+    });
+
+    document.getElementById('embed-copy-btn').addEventListener('click', function () {
+      var b = this;
+      copy(input.value).then(function () {
+        b.textContent = 'Copied!';
+        setTimeout(function () { b.textContent = 'Copy'; }, 1500);
+      });
+    });
+    document.getElementById('embed-close-btn').addEventListener('click', function () { modal.classList.remove('open'); });
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('open'); });
+  })();
+  </script>
+
   <script src="app.js"></script>
   <script src="ad-gate.js"></script>
 </body>
