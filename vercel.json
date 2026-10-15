@@ -11,6 +11,7 @@
   },
   "rewrites": [
     { "source": "/api/sync-status", "destination": "/api/catalog?action=status" },
-    { "source": "/api/sync", "destination": "/api/catalog?action=status" }
+    { "source": "/api/sync", "destination": "/api/catalog?action=status" },
+    { "source": "/watch/:id/:ep/embed", "destination": "/embed.html" }
   ]
 }
