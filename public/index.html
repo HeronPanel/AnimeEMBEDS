@@ -26,15 +26,14 @@
     .embed-row button,.embed-close{padding:10px 16px;border:0;border-radius:10px;background:#7c3aed;color:#fff;font-weight:600;cursor:pointer;font-family:inherit}
     .embed-close{background:#eee;color:#333;margin-top:14px}
 
-    /* ---- Embed mode: URL ke end me /embed ho to sirf fullscreen player ---- */
-    body.embed-mode > *:not(#watch-section):not(script):not(style){display:none!important}
-    body.embed-mode #watch-section{display:block!important;position:fixed;inset:0;z-index:99999;background:#000;padding:0;margin:0}
-    body.embed-mode .watch-topbar,
-    body.embed-mode .player-controls-bar,
-    body.embed-mode .watch-grid-layout{display:none!important}
-    body.embed-mode .player-theater,
-    body.embed-mode .player-screen{position:fixed;inset:0;width:100%;height:100%;max-width:none;margin:0;padding:0;border-radius:0;aspect-ratio:auto}
-    body.embed-mode #player-frame{width:100%;height:100%;border:0}
+    /* ---- Embed mode: URL ke end me /embed ho to poore page me sirf player ---- */
+    html.embed-mode, body.embed-mode{margin:0!important;padding:0!important;overflow:hidden!important;background:#000!important;height:100%}
+    body.embed-mode > *:not(#player-frame):not(script):not(style){display:none!important}
+    body.embed-mode > #player-frame{
+      display:block!important;position:fixed!important;top:0;left:0;right:0;bottom:0;
+      width:100vw!important;height:100vh!important;height:100dvh!important;
+      max-width:none!important;border:0!important;margin:0!important;padding:0!important;
+      border-radius:0!important;z-index:2147483647;background:#000}
   </style>
 </head>
 <body>
@@ -481,6 +480,11 @@
         <input id="embed-link-input" type="text" readonly>
         <button id="embed-copy-btn" type="button">Copy</button>
       </div>
+      <h3 style="margin-top:16px">Iframe Code</h3>
+      <div class="embed-row">
+        <input id="embed-code-input" type="text" readonly>
+        <button id="embed-code-copy-btn" type="button">Copy</button>
+      </div>
       <button id="embed-close-btn" class="embed-close" type="button">Close</button>
     </div>
   </div>
@@ -490,19 +494,35 @@
     var BASE = 'https://watchtoonflix.vercel.app/';
     var re = /^#\/watch\/[^\/]+\/[^\/]+/;
 
-    function isEmbed() { return /\/embed\/?$/.test(location.hash); }
-    function syncMode() { document.body.classList.toggle('embed-mode', isEmbed()); }
-    syncMode();
-    window.addEventListener('hashchange', syncMode);
+    var EMBED_RE = /\/embed\/?$/;
+    var embedMode = EMBED_RE.test(location.hash);
+
+    if (embedMode) {
+      var realHash = location.hash;
+      // app.js router ko normal hash dikhao taaki episode load ho jaye
+      history.replaceState(null, '', location.pathname + location.search + realHash.replace(EMBED_RE, ''));
+      document.documentElement.classList.add('embed-mode');
+      document.body.classList.add('embed-mode');
+      // iframe ko seedha body me le aao -> poori screen
+      var f = document.getElementById('player-frame');
+      if (f) document.body.appendChild(f);
+      // app.js ka initial routing hone ke baad URL me /embed wapas laga do
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          history.replaceState(null, '', location.pathname + location.search + realHash);
+        }, 1200);
+      });
+    }
 
     function getEmbedLink() {
-      var m = location.hash.match(re);
+      var m = location.hash.match(/^#\/watch\/([^\/]+)\/([^\/]+)/);
       if (!m) return null;
-      return BASE + m[0] + '/embed';
+      return BASE + 'watch/' + m[1] + '/' + m[2] + '/embed';
     }
 
     var modal = document.getElementById('embed-modal');
     var input = document.getElementById('embed-link-input');
+    var codeInput = document.getElementById('embed-code-input');
 
     function copy(text) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -516,6 +536,7 @@
       var link = getEmbedLink();
       if (!link) { alert('Pehle koi episode play karo, phir Get Embed dabao.'); return; }
       input.value = link;
+      codeInput.value = '<iframe src="' + link + '" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
       modal.classList.add('open');
       copy(link).catch(function () {});
     });
@@ -523,6 +544,14 @@
     document.getElementById('embed-copy-btn').addEventListener('click', function () {
       var b = this;
       copy(input.value).then(function () {
+        b.textContent = 'Copied!';
+        setTimeout(function () { b.textContent = 'Copy'; }, 1500);
+      });
+    });
+    document.getElementById('embed-code-copy-btn').addEventListener('click', function () {
+      var b = this;
+      codeInput.select();
+      (navigator.clipboard ? navigator.clipboard.writeText(codeInput.value) : Promise.resolve(document.execCommand('copy'))).then(function () {
         b.textContent = 'Copied!';
         setTimeout(function () { b.textContent = 'Copy'; }, 1500);
       });
